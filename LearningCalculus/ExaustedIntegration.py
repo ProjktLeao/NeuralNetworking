@@ -1,32 +1,24 @@
-
-
-#Steps of itteration
-
-#Pick a range for X
-#Pick a function
-#determine how many times the shape will be divided (integrations)
-#divide (range[1] - range[0]) by the number of integrations to get the linear rate of change of X
-#incrementaly add the linear rate of change of X to the lowest limit
-#do the same but decrease integrations by 1 and add the X's rate of change to the lower limit
-#get the mean(avarage) of the two values
-
 class function:
-    def __init__(self, func) -> None:
-        self.func = func
-    def calculate_area(self, limits, y_plane=0, integrations=10**10):
+    def __init__(self, derivitive) -> None:
+        self.func = derivitive
+    def calculate_area(self, limits, integrations=10**7, illustrate=False):
         if len(limits) == 2:
             rate_of_change = (limits[1]-limits[0])/integrations
             minimum_area = 0
             maximum_area = 0
             current_X = limits[0]
             for i in range(integrations):
-                minimum_area += max(self.func(current_X) * rate_of_change + y_plane,0) #because Area = base*height and ROC is base
+                minimum_area += max(self.func(current_X) * rate_of_change,0) #because Area = base*height and ROC is base
                 current_X += rate_of_change
             current_X = limits[0] + rate_of_change
             for j in range(integrations - 1):
-                maximum_area += max(self.func(current_X) * rate_of_change + y_plane,0) #because Area = base*height and ROC is base
+                maximum_area += max(self.func(current_X) * rate_of_change,0) #because Area = base*height and ROC is base
                 current_X += rate_of_change
-            return (minimum_area + maximum_area)/2
+            integral = (minimum_area + maximum_area)/2
+            if illustrate == True:
+                import FunctionIllustration as illustration
+                illustration.function(self.func).illustrate(integrations,limits,graph_integral=True,integral=integral)
+            return integral
 
 class example_functions:
     def function_X_squared(X):
@@ -59,7 +51,7 @@ class library_info:
             "believe i've optimized it great despite the fact ive been awake for roughly 17-18 hours. Enjoy! "
         )
     def _misc_info():
-        print("library name: ExaustedIntegration\n",
+        print("library name: Calculus Integration Calculator\n",
                 "Made by: Arthur Leao De Souza \n",
                 "Time made:12/3/2021(Dec) 9:06pm Sao Paulo time\n"
                 "library function: testing and familiarization of the application",
